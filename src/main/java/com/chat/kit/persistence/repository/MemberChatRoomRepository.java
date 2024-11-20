@@ -39,4 +39,12 @@ public interface MemberChatRoomRepository extends JpaRepository<MemberChatRoom,L
 
     @Query(value = "SELECT CHAT_ROOM_ID,  MEMBER_NUM FROM (SELECT CHAT_ROOM_ID, COUNT(*) AS MEMBER_NUM FROM MEMBER_CHAT_ROOM WHERE MEMBER_ID = :member1Id OR MEMBER_ID = :member2Id GROUP BY CHAT_ROOM_ID) AS FOO WHERE MEMBER_NUM=2", nativeQuery = true)
     Optional<Long> findOne2OneRoomNumber(@Param("member1Id") Long member1Id, @Param("member2Id") Long member2Id);
+
+    @Query(value = "SELECT CHAT_ROOM_ID FROM MEMBER_CHAT_ROOM " +
+            "WHERE MEMBER_ID IN :memberIds " +
+            "GROUP BY CHAT_ROOM_ID " +
+            "HAVING COUNT(DISTINCT MEMBER_ID) = :memberCount", nativeQuery = true)
+    Optional<Long> findMultipleRoomNumber(@Param("memberIds") List<Long> memberIds, @Param("memberCount") long memberCount);
+
+
 }

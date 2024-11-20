@@ -17,12 +17,21 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-        System.out.println("connected listener");
+        log.info("connected listener");
         log.info("Received a new web socket connection");
     }
 
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-        log.info("disconnected listener");
+        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
+
+        String sessionId = headerAccessor.getSessionId();
+        log.info("Disconnected listener triggered for sessionId: {}", sessionId);
+
+        if (headerAccessor.getUser() != null) {
+            log.info("Disconnect triggered by user: {}", headerAccessor.getUser().getName());
+        } else {
+            log.info("User is null in Disconnect listener, possibly a forced disconnect or network issue.");
+        }
     }
 }

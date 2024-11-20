@@ -9,6 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class FindOne2OneChatRoomDto {
+public class FindChatRoomDto {
     private List<Long> memberIds;
 }

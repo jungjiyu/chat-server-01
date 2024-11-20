@@ -13,13 +13,13 @@ public class Member {
     @Id
     @Column(name = "MEMBER_ID")
     private Long id;
-    public Member() {
-    }
-
     @Builder
     public Member(Long id) {
         this.id = id;
     }
+
+    public Member(){}
+
     @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<MemberChatRoom> memberChatRoom = new ArrayList<>();
